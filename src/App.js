@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-
+import "./App.css";
+import AddTask from "./components/AddTask";
 const App = () => {
   const [tasks, setTasks] = useState([]);
+  const [showAddTask, setShowAddTask] = useState(false);
 
   useEffect(() => {
     const getTasks = async () => {
@@ -11,7 +13,7 @@ const App = () => {
     getTasks();
   }, []);
 
-  //
+  // Function to get task from the fake api
   const fetchTasks = async () => {
     try {
       const res = await fetch("http://localhost:8000/tasks");
@@ -23,15 +25,35 @@ const App = () => {
     }
   };
 
+  // Function to send tasks to fake api
+  const addTask = async (task) => {
+    try {
+      const res = await fetch("http://localhost:8000/tasks", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(task),
+      });
+      const data = await res.json();
+      setTasks([...tasks, data]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="todo">
       <h2>Todo App</h2>
+      <button onClick={()=> setShowAddTask(!showAddTask)}>Add Task</button>
+      {showAddTask && <AddTask addTask={addTask} showAddTask={showAddTask} setShowAddTask={setShowAddTask}/>}
       <div className="tasks">
         {tasks &&
           tasks.map((task) => {
             return (
               <div key={task.id} className="task">
                 <h4>{task.text}</h4>
+                <p>{task.day}</p>
               </div>
             );
           })}
