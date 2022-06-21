@@ -1,8 +1,15 @@
 import { useState } from "react";
 
-const AddTask = ({ AddTask, showAddTask, setShowAddTask }) => {
-  const [name, setName] = useState("");
+const AddTask = ({ addTask, showAddTask, setShowAddTask }) => {
+  const [text, setText] = useState("");
   const [day, setDay] = useState("");
+  const [reminder, setReminder] = useState(false);
+
+  const sendData = async (e) => {
+    e.preventDefault();
+    let task = { text, day, reminder };
+    addTask(task);
+  };
 
   return (
     <div className="addTask">
@@ -10,8 +17,8 @@ const AddTask = ({ AddTask, showAddTask, setShowAddTask }) => {
         <label>Task Name:</label>
         <input
           type="text"
-          onChange={(e) => setName(e.target.value)}
-          value={name}
+          onChange={(e) => setText(e.target.value)}
+          value={text}
           required
         />
         <label>Task Day:</label>
@@ -21,6 +28,13 @@ const AddTask = ({ AddTask, showAddTask, setShowAddTask }) => {
           onChange={(e) => setDay(e.target.value)}
           required
         />
+        <label htmlFor="">Reminder</label>
+        <input
+          type="checkbox"
+          value={reminder}
+          onChange={() => setReminder(!reminder)}
+        />
+        <input type="submit" value={"Post Task"} />
       </form>
     </div>
   );

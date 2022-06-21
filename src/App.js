@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import AddTask from "./components/AddTask";
+import DeleteButton from "./components/DeleteButton";
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [showAddTask, setShowAddTask] = useState(false);
@@ -42,11 +43,29 @@ const App = () => {
     }
   };
 
+  // Delete task function
+  const deleteTask = async (id) => {
+    const res = await fetch("http://localhost:8000/tasks/" + id, {
+      method: "DELETE",
+    });
+    if (res.status == 200) {
+      alert("task deleted");
+    } else {
+      alert("Task not found");
+    }
+  };
+
   return (
     <div className="todo">
       <h2>Todo App</h2>
-      <button onClick={()=> setShowAddTask(!showAddTask)}>Add Task</button>
-      {showAddTask && <AddTask addTask={addTask} showAddTask={showAddTask} setShowAddTask={setShowAddTask}/>}
+      <button onClick={() => setShowAddTask(!showAddTask)}>Add Task</button>
+      {showAddTask && (
+        <AddTask
+          addTask={addTask}
+          showAddTask={showAddTask}
+          setShowAddTask={setShowAddTask}
+        />
+      )}
       <div className="tasks">
         {tasks &&
           tasks.map((task) => {
@@ -54,6 +73,7 @@ const App = () => {
               <div key={task.id} className="task">
                 <h4>{task.text}</h4>
                 <p>{task.day}</p>
+                <DeleteButton deleteTask={deleteTask} id={task.id} setTasks={setTasks} tasks={tasks}/>
               </div>
             );
           })}
