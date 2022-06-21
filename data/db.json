@@ -1,16 +1,28 @@
 {
   "tasks": [
     {
-      "text": "Run",
-      "day": "March 15th 5:00 AM",
-      "reminder": true,
-      "id": 3
+      "text": "Attend Meeting",
+      "day": "March 15 2022",
+      "reminder": false,
+      "id": 7
     },
     {
-      "text": "Hike",
-      "day": "16 Jan 4:00 AM ",
-      "reminder": true,
-      "id": 4
+      "text": "Run",
+      "day": "today",
+      "reminder": false,
+      "id": 8
+    },
+    {
+      "text": "Clean ",
+      "day": "20 March 2022",
+      "reminder": false,
+      "id": 9
+    },
+    {
+      "text": "Strech",
+      "day": "Now",
+      "reminder": false,
+      "id": 10
     }
   ]
 }

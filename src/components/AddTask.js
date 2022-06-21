@@ -5,15 +5,25 @@ const AddTask = ({ addTask, showAddTask, setShowAddTask }) => {
   const [day, setDay] = useState("");
   const [reminder, setReminder] = useState(false);
 
+  // Function to add task
   const sendData = async (e) => {
     e.preventDefault();
     let task = { text, day, reminder };
     addTask(task);
+    setShowAddTask(!showAddTask);
   };
 
   return (
     <div className="addTask">
-      <form onSubmit={sendData}>
+      <button
+        onClick={() => {
+          setShowAddTask(!showAddTask);
+        }}
+      >
+        {showAddTask && "Close"}
+        {!showAddTask && "Add task"}
+      </button>
+      {showAddTask &&<form onSubmit={sendData}>
         <label>Task Name:</label>
         <input
           type="text"
@@ -35,7 +45,7 @@ const AddTask = ({ addTask, showAddTask, setShowAddTask }) => {
           onChange={() => setReminder(!reminder)}
         />
         <input type="submit" value={"Post Task"} />
-      </form>
+      </form>}
     </div>
   );
 };

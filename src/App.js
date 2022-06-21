@@ -1,12 +1,17 @@
+// Utilities
 import { useEffect, useState } from "react";
-import "./App.css";
+
+// Components
 import AddTask from "./components/AddTask";
 import DeleteButton from "./components/DeleteButton";
 import UpdateTask from "./components/UpdateTask";
+import "./App.css";
+
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [showAddTask, setShowAddTask] = useState(false);
 
+  // Fetch db tasks on page load
   useEffect(() => {
     const getTasks = async () => {
       const res = await fetchTasks();
@@ -15,7 +20,7 @@ const App = () => {
     getTasks();
   }, []);
 
-  // Function to get task from the fake api
+  // Function to get all the tasks from the fake api
   const fetchTasks = async () => {
     try {
       const res = await fetch("http://localhost:8000/tasks");
@@ -27,7 +32,7 @@ const App = () => {
     }
   };
 
-  // Function to get task from the fake api
+  // Function to get sigle task from the fake api
   const fetchTask = async (id) => {
     try {
       const res = await fetch("http://localhost:8000/tasks/" + id);
@@ -38,7 +43,7 @@ const App = () => {
     }
   };
 
-  // Function to send tasks to fake api
+  // Function to add task to fake api
   const addTask = async (task) => {
     try {
       const res = await fetch("http://localhost:8000/tasks", {
@@ -55,7 +60,7 @@ const App = () => {
     }
   };
 
-  // Update task function
+  // Function to Update task 
   const updateTask = async (id, text) => {
     const task = await fetchTask(id);
     console.log(task);
@@ -69,9 +74,9 @@ const App = () => {
       body: JSON.stringify(newTask),
     });
     const data = await res.json();
-    setTasks(tasks.map((task) => 
-      task.id == id ? {...task, text: data.text} : task
-    ))
+    setTasks(
+      tasks.map((task) => (task.id == id ? { ...task, text: data.text } : task))
+    );
     console.log(data);
   };
 
@@ -90,14 +95,11 @@ const App = () => {
   return (
     <div className="todo">
       <h2>Todo App</h2>
-      <button onClick={() => setShowAddTask(!showAddTask)}>Add Task</button>
-      {showAddTask && (
-        <AddTask
-          addTask={addTask}
-          showAddTask={showAddTask}
-          setShowAddTask={setShowAddTask}
-        />
-      )}
+      <AddTask
+        addTask={addTask}
+        showAddTask={showAddTask}
+        setShowAddTask={setShowAddTask}
+      />
       <div className="tasks">
         {tasks &&
           tasks.map((task) => {
