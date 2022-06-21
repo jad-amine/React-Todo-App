@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
 
-function App() {
+const App = () => {
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    const getTasks = async () => {
+      const res = await fetchTasks();
+      setTasks(res);
+    };
+    getTasks();
+  }, []);
+
+  //
+  const fetchTasks = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/tasks");
+      const data = await res.json();
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="todo">
+      <h2>Todo App</h2>
+      <div className="tasks">
+        {tasks &&
+          tasks.map((task) => {
+            return (
+              <div key={task.id} className="task">
+                <h4>{task.text}</h4>
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
-}
+};
 
 export default App;
