@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const UpdateTask = ({ task, setTasks, updateTask, id }) => {
+const UpdateTask = ({ task, setTasks, updateTask}) => {
   const [newTask, setNewTask] = useState(task);
   const [text, setText] = useState("");
 
@@ -11,10 +11,10 @@ const UpdateTask = ({ task, setTasks, updateTask, id }) => {
         value={text}
         onChange={(e) => {
           setText(e.target.value);
-          setNewTask({ ...task, text: { text } });
+          setNewTask({ ...task, text: text });
         }}
       />
-      <button onClick={() => console.log(id, newTask)}>Update</button>
+      <button onClick={() => updateTask(task.id, text)}>Update</button>
     </>
   );
 };

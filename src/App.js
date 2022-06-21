@@ -27,6 +27,17 @@ const App = () => {
     }
   };
 
+  // Function to get task from the fake api
+  const fetchTask = async (id) => {
+    try {
+      const res = await fetch("http://localhost:8000/tasks/" + id);
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   // Function to send tasks to fake api
   const addTask = async (task) => {
     try {
@@ -45,12 +56,22 @@ const App = () => {
   };
 
   // Update task function
-  const updateTask = async (id, task) => {
+  const updateTask = async (id, text) => {
+    const task = await fetchTask(id);
+    console.log(task);
+    const newTask = { ...task, text: text };
+    console.log(newTask);
     const res = await fetch("http://localhost:8000/tasks/" + id, {
       method: "PUT",
-      body: JSON.stringify(task),
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(newTask),
     });
     const data = await res.json();
+    setTasks(tasks.map((task) => 
+      task.id == id ? {...task, text: data.text} : task
+    ))
     console.log(data);
   };
 
@@ -88,7 +109,6 @@ const App = () => {
                   task={task}
                   setTasks={setTasks}
                   updateTask={updateTask}
-                  id={task.id}
                 />
                 <DeleteButton
                   deleteTask={deleteTask}
