@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import AddTask from "./components/AddTask";
 import DeleteButton from "./components/DeleteButton";
+import UpdateTask from "./components/UpdateTask";
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [showAddTask, setShowAddTask] = useState(false);
@@ -43,6 +44,16 @@ const App = () => {
     }
   };
 
+  // Update task function
+  const updateTask = async (id, task) => {
+    const res = await fetch("http://localhost:8000/tasks/" + id, {
+      method: "PUT",
+      body: JSON.stringify(task),
+    });
+    const data = await res.json();
+    console.log(data);
+  };
+
   // Delete task function
   const deleteTask = async (id) => {
     const res = await fetch("http://localhost:8000/tasks/" + id, {
@@ -73,7 +84,18 @@ const App = () => {
               <div key={task.id} className="task">
                 <h4>{task.text}</h4>
                 <p>{task.day}</p>
-                <DeleteButton deleteTask={deleteTask} id={task.id} setTasks={setTasks} tasks={tasks}/>
+                <UpdateTask
+                  task={task}
+                  setTasks={setTasks}
+                  updateTask={updateTask}
+                  id={task.id}
+                />
+                <DeleteButton
+                  deleteTask={deleteTask}
+                  id={task.id}
+                  setTasks={setTasks}
+                  tasks={tasks}
+                />
               </div>
             );
           })}
